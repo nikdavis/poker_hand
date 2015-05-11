@@ -68,6 +68,14 @@ class Hand(object):
     # save max rank later
     return rank != None
 
+  # Will be run after royal flush, so no need to check
+  def has_straight_flush(self):
+    return self.has_straight() and self.has_flush()
+
+  def has_royal_flush(self):
+    # Check for king to avoid ace low straight mistruth
+    has_king_and_ace = 13 in self.ranks and 14 in self.ranks
+    return has_king_and_ace and has_straight_flush
 
 
 

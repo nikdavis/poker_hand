@@ -11,7 +11,7 @@ def test_can_detect_ace_low_straight():
   assert hand.has_straight() == True
 
 
-def test_can_detect_true_straight():
+def test_can_detect_straight():
   cards = "2H 3D 5S 4C 6D"
   parser = CardParser(cards)
   hand = Hand(parser.ranks(), parser.suits())
@@ -82,3 +82,29 @@ def test_can_detect_false_four_kind():
   parser = CardParser(cards)
   hand = Hand(parser.ranks(), parser.suits())
   assert hand.has_four_kind() == False
+
+def test_can_detect_straight_flush():
+  cards = "8H 9H TH JH QH"
+  parser = CardParser(cards)
+  hand = Hand(parser.ranks(), parser.suits())
+  assert hand.has_four_kind() == False
+
+def test_can_detect_false_straight_flush():
+  cards = "2H 3D 5S 4C 6D"
+  parser = CardParser(cards)
+  hand = Hand(parser.ranks(), parser.suits())
+  assert hand.has_four_kind() == False
+
+def test_can_detect_royal_flush():
+  cards = "TD JD QD KD AD"
+  parser = CardParser(cards)
+  hand = Hand(parser.ranks(), parser.suits())
+  assert hand.has_four_kind() == False
+
+def test_can_detect_false_royal_flush():
+  cards = "TD JD QD KD AH"
+  parser = CardParser(cards)
+  hand = Hand(parser.ranks(), parser.suits())
+  assert hand.has_four_kind() == False
+
+
