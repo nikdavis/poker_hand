@@ -14,6 +14,9 @@ class Hand(object):
   def rank(self):
     return self.overall_rank
 
+  def ranks(self):
+    return self.ranks
+
   def has_straight(self):
     rank_sorted = sorted(self.ranks)
     if 14 in rank_sorted:
@@ -110,7 +113,13 @@ class Hand(object):
     return rank
 
   def __eq__(self, other):
-    return self.overall_rank == other.overall_rank
+    if(self.overall_rank == other.overall_rank):
+      return True
+    elif(self.overall_rank == 9):
+      return True
+    elif(self.overall_rank == 8):
+      return max(self.ranks) == max(other.ranks)
+
 
 
 
