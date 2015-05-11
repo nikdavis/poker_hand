@@ -8,7 +8,11 @@ class Hand(object):
     """Expect CardParser dict of one hand"""
     self.ranks = ranks
     self.suits = suits
+    self.overall_rank = self.calc_rank()
     self.hands = []
+
+  def rank(self):
+    return self.overall_rank
 
   def has_straight(self):
     rank_sorted = sorted(self.ranks)
@@ -83,25 +87,31 @@ class Hand(object):
     print self.has_flush()
     return has_king_and_ace and self.has_straight_flush()
 
-  def set_rank(self):
+  def calc_rank(self):
+    rank = 0
     if(self.has_royal_flush()):
-      self.rank = 9
+      rank = 9
     elif(self.has_straight_flush()):
-      self.rank = 8
+      rank = 8
     elif(self.has_four_kind()):
-      self.rank = 7
+      rank = 7
     elif(self.has_full_house()):
-      self.rank = 6
+      rank = 6
     elif(self.has_flush()):
-      self.rank = 5
+      rank = 5
     elif(self.has_straight()):
-      self.rank = 4
+      rank = 4
     elif(self.has_three_kind()):
-      self.rank = 3
+      rank = 3
     elif(self.has_two_pair()):
-      self.rank = 2
+      rank = 2
     elif(self.has_pair()):
-      self.rank = 1
+      rank = 1
+    return rank
+
+  def __eq__(self, other):
+    return self.overall_rank == other.overall_rank
+
 
 
 

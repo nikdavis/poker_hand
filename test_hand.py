@@ -119,4 +119,9 @@ def test_can_detect_false_royal_flush():
   hand = Hand(parser.ranks(), parser.suits())
   assert hand.has_royal_flush() == False
 
+def test_equivalence():
+  cards_arr = ["2H 2C 4S 4D AD", "2D 2S 4C 4H AH"]
+  parsers = [CardParser(cards) for cards in cards_arr]
+  hands = [Hand(parser.ranks(), parser.suits()) for parser in parsers]
+  assert hands[0] == hands[1]
 
