@@ -24,11 +24,19 @@ def test_can_detect_false_flush():
   hand = Hand(CardParser("2H 3D 5S 8C AD").dict())
   assert hand.has_flush() == False
 
-def test_can_detect_pairs():
+def test_can_detect_pair():
   hand = Hand(CardParser("2H 2D 5S 8C AD").dict())
   assert hand.has_pair() == True
 
-def test_can_detect_false_pairs():
+def test_can_detect_false_pair():
+  hand = Hand(CardParser("2H 9D 5S 8C AD").dict())
+  assert hand.has_pair() == False
+
+def test_can_detect_two_pair():
+  hand = Hand(CardParser("2H 2D 9S 9C AD").dict())
+  assert hand.has_pair() == True
+
+def test_can_detect_false_two_pair():
   hand = Hand(CardParser("2H 9D 5S 8C AD").dict())
   assert hand.has_pair() == False
 

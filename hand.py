@@ -4,7 +4,7 @@ from card_parser import *
 from collections import Counter
 
 class Hand(object):
-  def __init__(self, card_dict):
+  def __init__(self, ranks, suits):
     """Expect CardParser dict of one hand"""
     self.cards = card_dict
     self.hands = []
@@ -25,39 +25,49 @@ class Hand(object):
     return len(set(suits)) == 1
 
   def of_a_kind(self):
-    """Returns a lhast of any matches of a kind e.g. [], [2], or [2,3] for full house."""
+    """Returns a hash of any matches of a kind e.g. [], [2], or [2,3] for full house."""
     ranks = [card["name"][0] for card in self.cards]
     counts = Counter(ranks)
     print(counts)
     return counts
 
+  # Should be called after has_two_pair, so we don't need to worry about multiple pairs
   def has_pair(self):
     counts = self.of_a_kind()
-    max_rank = 0
+    rank = None
     for k, v in counts.iteritems():
       if v == 2:
-        if CardParser.rank(k) > max_rank:
-          max_rank = CardParser.rank(k)
+        rank = CardParser.rank(k)
     # save max rank later
-    return max_rank > 0
+    return rank != None
+
+  def has_two_pair(self):
+    counts = self.of_a_kind()
+    ranks = []
+    pair_count = 0
+    for k, v in counts.iteritems():
+      if v == 2:
+        ranks.append(CardParser.rank(k))
+        pair_count += 1
+    return pair_count == 2
 
   def has_three_kind(self):
     counts = self.of_a_kind()
-    rank = 0
+    rank = None
     for k, v in counts.iteritems():
       if v == 3:
         rank = CardParser.rank(k)
     # save max rank later
-    return rank > 0
+    return rank != None
 
   def has_four_kind(self):
     counts = self.of_a_kind()
-    rank = 0
+    rank = None
     for k, v in counts.iteritems():
       if v == 4:
         rank = CardParser.rank(k)
     # save max rank later
-    return rank > 0
+    return rank != None
 
 
 
