@@ -19,7 +19,7 @@ class Hand(object):
     for k, g in groupby(enumerate(rank_sorted), lambda (i,x):i-x):
         arr_of_runs.append(map(itemgetter(1), g))
     print arr_of_runs
-    return len(arr_of_runs[0]) == 5
+    return 5 in [len(run) for run in arr_of_runs] # 5 sequential cards
 
   def has_flush(self):
     return len(set(self.suits)) == 1
@@ -68,6 +68,9 @@ class Hand(object):
     # save max rank later
     return rank != None
 
+  def has_full_house(self):
+    return self.has_pair() and self.has_three_kind()
+
   # Will be run after royal flush, so no need to check
   def has_straight_flush(self):
     return self.has_straight() and self.has_flush()
@@ -75,7 +78,31 @@ class Hand(object):
   def has_royal_flush(self):
     # Check for king to avoid ace low straight mistruth
     has_king_and_ace = 13 in self.ranks and 14 in self.ranks
-    return has_king_and_ace and has_straight_flush
+    print has_king_and_ace
+    print self.has_straight()
+    print self.has_flush()
+    return has_king_and_ace and self.has_straight_flush()
+
+  def set_rank(self):
+    if(self.has_royal_flush()):
+      self.rank = 9
+    elif(self.has_straight_flush()):
+      self.rank = 8
+    elif(self.has_four_kind()):
+      self.rank = 7
+    elif(self.has_full_house()):
+      self.rank = 6
+    elif(self.has_flush()):
+      self.rank = 5
+    elif(self.has_straight()):
+      self.rank = 4
+    elif(self.has_three_kind()):
+      self.rank = 3
+    elif(self.has_two_pair()):
+      self.rank = 2
+    elif(self.has_pair()):
+      self.rank = 1
+
 
 
 

@@ -83,28 +83,40 @@ def test_can_detect_false_four_kind():
   hand = Hand(parser.ranks(), parser.suits())
   assert hand.has_four_kind() == False
 
+def test_can_detect_full_house():
+  cards = "JD JH 2D 2H 2C"
+  parser = CardParser(cards)
+  hand = Hand(parser.ranks(), parser.suits())
+  assert hand.has_full_house() == True
+
+def test_can_detect_false_full_house():
+  cards = "TD JD QD KD AH"
+  parser = CardParser(cards)
+  hand = Hand(parser.ranks(), parser.suits())
+  assert hand.has_full_house() == False
+
 def test_can_detect_straight_flush():
   cards = "8H 9H TH JH QH"
   parser = CardParser(cards)
   hand = Hand(parser.ranks(), parser.suits())
-  assert hand.has_four_kind() == False
+  assert hand.has_straight_flush() == True
 
 def test_can_detect_false_straight_flush():
   cards = "2H 3D 5S 4C 6D"
   parser = CardParser(cards)
   hand = Hand(parser.ranks(), parser.suits())
-  assert hand.has_four_kind() == False
+  assert hand.has_straight_flush() == False
 
 def test_can_detect_royal_flush():
   cards = "TD JD QD KD AD"
   parser = CardParser(cards)
   hand = Hand(parser.ranks(), parser.suits())
-  assert hand.has_four_kind() == False
+  assert hand.has_royal_flush() == True
 
 def test_can_detect_false_royal_flush():
   cards = "TD JD QD KD AH"
   parser = CardParser(cards)
   hand = Hand(parser.ranks(), parser.suits())
-  assert hand.has_four_kind() == False
+  assert hand.has_royal_flush() == False
 
 
