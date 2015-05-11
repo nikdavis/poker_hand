@@ -1,7 +1,7 @@
 from hand import *
 from card_parser import *
 
-def test_exhasts():
+def test_exists():
   assert isinstance(Hand,type)
 
 def test_can_detect_ace_low_straight():
