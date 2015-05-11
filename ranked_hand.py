@@ -42,12 +42,14 @@ class HighCard(RankedHand):
   def __eq__(self, other):
     if self.rank() != other.rank():
       return super(HighCard, self).__eq__(other)
-    return self.compare_high_cards(other) == 0
+    else:
+      return self.compare_high_cards(other) == 0
 
   def __lt__(self, other):
     if self.rank() != other.rank():
       return super(HighCard, self).__lt__(other)
-    return self.compare_high_cards(other) == -1
+    else:
+      return self.compare_high_cards(other) == -1
 
 
 @total_ordering
@@ -56,7 +58,6 @@ class OnePair(RankedHand):
     super(OnePair, self).__init__(remaining_cards)
     self._rank = 1
     self._pair_cards = pair_cards
-    self._remaining_cards = remaining_cards
 
   def pair_cards(self):
     return self._pair_cards
@@ -64,12 +65,14 @@ class OnePair(RankedHand):
   def __eq__(self, other):
     if self.rank() != other.rank():
       return super(OnePair, self).__eq__(other)
-    return self.pair_cards() == other.pair_cards() and self.compare_high_cards(other) == 0
+    else:
+      return self.pair_cards() == other.pair_cards() and self.compare_high_cards(other) == 0
 
   def __lt__(self, other):
     if self.rank() != other.rank():
       return super(OnePair, self).__lt__(other)
-    return self.pair_cards()[0] < other.pair_cards()[0] or (self.pair_cards() == other.pair_cards() and self.compare_high_cards(other) == -1)
+    else:
+      return self.pair_cards()[0] < other.pair_cards()[0] or (self.pair_cards() == other.pair_cards() and self.compare_high_cards(other) == -1)
 
 
 
@@ -84,7 +87,6 @@ class TwoPair(RankedHand):
     else:
       self._high_pair = arr_of_pair_cards[1]
       self._low_pair = arr_of_pair_cards[0]
-    self._remaining_cards = remaining_cards
 
   def high_pair(self):
     return self._high_pair
@@ -95,7 +97,8 @@ class TwoPair(RankedHand):
   def __eq__(self, other):
     if self.rank() != other.rank():
       return super(TwoPair, self).__eq__(other)
-    return self.high_pair() == other.high_pair() and self.low_pair() == other.low_pair() and self.compare_high_cards(other) == 0
+    else:
+      return self.high_pair() == other.high_pair() and self.low_pair() == other.low_pair() and self.compare_high_cards(other) == 0
 
   def __lt__(self, other):
     if self.rank() != other.rank():
@@ -106,7 +109,8 @@ class TwoPair(RankedHand):
       return True
     elif(self.high_pair() == other.high_pair() and self.low_pair() == other.low_pair() and self.compare_high_cards(other) == -1):
       return True
-    return False
+    else:
+      return False
 
 
 
@@ -116,7 +120,6 @@ class ThreeKind(RankedHand):
     super(ThreeKind, self).__init__(remaining_cards)
     self._rank = 3
     self._three_kind_cards = three_kind_cards
-    self._remaining_cards = remaining_cards
 
   def three_kind(self):
     return self._three_kind_cards
@@ -124,7 +127,8 @@ class ThreeKind(RankedHand):
   def __eq__(self, other):
     if self.rank() != other.rank():
       return super(ThreeKind, self).__eq__(other)
-    return False # Can't be equal
+    else:
+      return False # Can't be equal
 
   def __lt__(self, other):
     if self.rank() != other.rank():
@@ -134,16 +138,122 @@ class ThreeKind(RankedHand):
       return True
     elif(self.three_kind() == other.three_kind() and self.compare_high_cards(other) == -1):
       return True
-    return False
+    else:
+      return False
+
+
+
+@total_ordering
+class Straight(RankedHand):
+  def __init__(self, all_cards):
+    super(Straight, self).__init__(all_cards)
+    self._rank = 4
+    # Check for Ace low
+    if 14 in all_cards and 2 in all_cards:
+      tmp = all_cards
+      tmp.remove(14)
+      self._straight_rank = max(tmp)
+    else:
+      self._straight_rank = max(all_cards)
+
+  def straight_rank(self):
+    return self._straight_rank
+
+  def __eq__(self, other):
+    if self.rank() != other.rank():
+      return super(Straight, self).__eq__(other)
+    else:
+      return self.straight_rank() == other.straight_rank()
+
+  def __lt__(self, other):
+    if self.rank() != other.rank():
+      return super(Straight, self).__lt__(other)
+    else:
+      return self.straight_rank() < other.straight_rank()
+
+
+
+@total_ordering
+class Flush(RankedHand):
+  def __init__(self, all_cards):
+    super(Flush, self).__init__(all_cards)
+    self._rank = 5
+
+  def __eq__(self, other):
+    if self.rank() != other.rank():
+      return super(Flush, self).__eq__(other)
+    else:
+      return self.compare_high_cards(other) == 0
+
+  def __lt__(self, other):
+    if self.rank() != other.rank():
+      return super(Flush, self).__lt__(other)
+    else:
+      return self.compare_high_cards(other) == -1
+
+
+
+@total_ordering
+class FullHouse(RankedHand):
+  def __init__(self, three_kind, pair):
+    super(FullHouse, self).__init__([])
+    self._three_kind = three_kind
+    self._pair = pair
+    self._rank = 6
+
+  def three_kind(self):
+    return self._three_kind
+
+  def pair(self):
+    return self._pair
+
+  def __eq__(self, other):
+    if self.rank() != other.rank():
+      return super(FullHouse, self).__eq__(other)
+    else:
+      return False # Can't be equal
+
+  def __lt__(self, other):
+    if self.rank() != other.rank():
+      return super(FullHouse, self).__lt__(other)
+    elif(self.three_kind()[0] < other.three_kind()[0]):
+      return True
+    else:
+      return False
 
 
 
 
+@total_ordering
+class FourKind(RankedHand):
+  def __init__(self, four_kind, remaining_card):
+    super(FourKind, self).__init__(remaining_card)
+    self._four_kind = four_kind
+    self._rank = 7
+
+  def four_kind(self):
+    return self._four_kind
+
+  def __eq__(self, other):
+    if self.rank() != other.rank():
+      return super(FourKind, self).__eq__(other)
+    return False # Can't be equal
+
+  def __lt__(self, other):
+    if self.rank() != other.rank():
+      return super(FourKind, self).__lt__(other)
+    elif(self.four_kind()[0] < other.four_kind()[0]):
+      return True
+    else:
+      return False
 
 
 
-
-
+@total_ordering
+class StraightFlush(Straight):
+  def __init__(self, all_cards):
+    super(StraightFlush, self).__init__(all_cards)
+    self._rank = 8
 
 
 

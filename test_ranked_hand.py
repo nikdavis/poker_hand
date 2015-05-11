@@ -43,8 +43,47 @@ def test_three_kind_decided_on_three_kind():
   assert high > low
   assert high != low
 
+def test_straight_decided_straight():
+  high, low  = Straight([14, 13, 12, 11, 10]), Straight([9, 8, 7, 6, 5])
+  assert high.straight_rank() == 14
+  assert low.straight_rank() == 9
+  assert high > low
+  assert high != low
 
+def test_straight_ace_low():
+  high, low  = Straight([14, 13, 12, 11, 10]), Straight([5, 4, 3, 2, 14])
+  assert high.straight_rank() == 14
+  assert low.straight_rank() == 5
+  assert high > low
+  assert high != low
+  assert high == high
 
+def test_flush():
+  high, low  = Straight([14, 13, 2, 10, 10]), Straight([5, 4, 3, 2, 14])
+  assert high > low
+  assert high != low
+  assert high == high
+
+def test_full_house():
+  high, low  = FullHouse([12, 12, 12], [2, 2]), FullHouse([3, 3, 3], [14, 14]),
+  assert high > low
+  assert high != low
+
+def test_full_house():
+  high, low  = FourKind([12, 12, 12, 12], [2]), FourKind([3, 3, 3, 3], [14]),
+  assert high > low
+  assert high != low
+
+def test_straight_flush():
+  high, low = StraightFlush([14, 13, 12, 11, 10]), StraightFlush([11, 10, 9, 8, 7]),
+  high_no_flush = Straight([14, 13, 12, 11, 10])
+  assert high > low
+  assert high != low
+
+def test_straight_flush_against_straight():
+  high, low = StraightFlush([14, 13, 12, 11, 10]), Straight([14, 13, 12, 11, 10]),
+  assert high > low
+  assert high != low
 
 
 
