@@ -24,7 +24,7 @@ class CardParser(object):
 
   def __init__(self, card_str):
     """Takes one hands string, returns dict"""
-    self.card_str = card_str
+    self.cards = card_str.split(" ")
 
   @classmethod
   def rank(cls, card_num_str):
@@ -34,9 +34,10 @@ class CardParser(object):
   def suit(cls, card_suit_ltr):
     return cls.SUIT[card_suit_ltr]
 
-  def dict(self):
-    card_dict = []
-    cards = self.card_str.split(" ")
-    for card in cards:
-      card_dict.append({"name": card, "rank": self.rank(card[0]), "suit": self.suit(card[-1])})
-    return card_dict
+  def ranks(self):
+    return [self.RANK[card[0]] for card in self.cards]
+
+  def suits(self):
+    return [self.SUIT[card[-1]] for card in self.cards]
+
+
