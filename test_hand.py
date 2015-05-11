@@ -51,13 +51,13 @@ def test_can_detect_two_pair():
   cards = "2H 2D 9S 9C AD"
   parser = CardParser(cards)
   hand = Hand(parser.ranks(), parser.suits())
-  assert hand.has_pair() == True
+  assert hand.has_two_pair() == True
 
 def test_can_detect_false_two_pair():
   cards = "2H 9D 5S 8C AD"
   parser = CardParser(cards)
   hand = Hand(parser.ranks(), parser.suits())
-  assert hand.has_pair() == False
+  assert hand.has_two_pair() == False
 
 def test_can_detect_three_kind():
   cards = "AH AD AS 8C 2D"
@@ -118,10 +118,4 @@ def test_can_detect_false_royal_flush():
   parser = CardParser(cards)
   hand = Hand(parser.ranks(), parser.suits())
   assert hand.has_royal_flush() == False
-
-def test_equivalence():
-  cards_arr = ["2H 2C 4S 4D AD", "2D 2S 4C 4H AH"]
-  parsers = [CardParser(cards) for cards in cards_arr]
-  hands = [Hand(parser.ranks(), parser.suits()) for parser in parsers]
-  assert hands[0] == hands[1]
 

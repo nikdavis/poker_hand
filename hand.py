@@ -5,14 +5,18 @@ from collections import Counter
 
 class Hand(object):
   def __init__(self, ranks, suits):
-    """Expect CardParser dict of one hand"""
     self.ranks = ranks
     self.suits = suits
-    self.overall_rank = self.calc_rank()
     self.hands = []
+    self._remaining_cards = None
+    self._pair_ranks = {  'one': None,
+                          'two': None,
+                          'three': None,
+                          'four': None
+                        }
+    # Calculate the things
+    self._of_a_kind()
 
-  def rank(self):
-    return self.overall_rank
 
   def has_straight(self):
     rank_sorted = sorted(self.ranks)
@@ -28,57 +32,45 @@ class Hand(object):
   def has_flush(self):
     return len(set(self.suits)) == 1
 
-  def of_a_kind(self):
-    """Returns a hash of any matches of a kind e.g. [], [2], or [2,3] for full house."""
+  def _of_a_kind(self):
+    """Returns a hash of k -> v, where key is rank and v is frequency"""
     counts = Counter(self.ranks)
-    print(counts)
-    return counts
+    pair_count = 0
+    pair_ranks = []
+    for k, v in counts.iteritems():
+      if v == 2:
+        pair_count += 1
+        pair_ranks.append(k)
+      if v == 3:
+        self._pair_ranks["three"] = k
+      if v == 4:
+        self._pair_ranks["four"] = k
+    if pair_count == 1:
+      self._pair_ranks["one"]  = pair_ranks[0]
+    elif pair_count == 2:
+      self._pair_ranks["two"]  = pair_ranks
+    print (self._pair_ranks)
 
   # Should be called after has_two_pair, so we don't need to worry about multiple pairs
   def has_pair(self):
-    counts = self.of_a_kind()
-    rank = None
-    for k, v in counts.iteritems():
-      if v == 2:
-        rank = k
-    # save max rank later
-    return rank != None
+    return self._pair_ranks["one"] != None
 
   def has_two_pair(self):
-    counts = self.of_a_kind()
-    ranks = []
-    pair_count = 0
-    for k, v in counts.iteritems():
-      if v == 2:
-        ranks.append(k)
-        pair_count += 1
-    return pair_count == 2
+    return self._pair_ranks["two"] != None
 
   def has_three_kind(self):
-    counts = self.of_a_kind()
-    rank = None
-    for k, v in counts.iteritems():
-      if v == 3:
-        rank = k
-    # save max rank later
-    return rank != None
+    return self._pair_ranks["three"] != None
 
   def has_four_kind(self):
-    counts = self.of_a_kind()
-    rank = None
-    for k, v in counts.iteritems():
-      if v == 4:
-        rank = k
-    # save max rank later
-    return rank != None
+    return self._pair_ranks["four"] != None
 
   def has_full_house(self):
     return self.has_pair() and self.has_three_kind()
 
-  # Will be run after royal flush, so no need to check
   def has_straight_flush(self):
     return self.has_straight() and self.has_flush()
 
+  # Not used in this example
   def has_royal_flush(self):
     # Check for king to avoid ace low straight mistruth
     has_king_and_ace = 13 in self.ranks and 14 in self.ranks
@@ -88,11 +80,9 @@ class Hand(object):
     return has_king_and_ace and self.has_straight_flush()
 
   def calc_rank(self):
-    rank = 0
-    if(self.has_royal_flush()):
-      rank = 9
-    elif(self.has_straight_flush()):
-      rank = 8
+    hand = None
+    if(self.has_straight_flush()):
+      hand = 8
     elif(self.has_four_kind()):
       rank = 7
     elif(self.has_full_house()):
@@ -108,9 +98,6 @@ class Hand(object):
     elif(self.has_pair()):
       rank = 1
     return rank
-
-  def __eq__(self, other):
-    return self.overall_rank == other.overall_rank
 
 
 

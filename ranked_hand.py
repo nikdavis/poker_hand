@@ -1,7 +1,3 @@
-from functools import total_ordering
-
-
-@total_ordering
 class RankedHand(object):
   def __init__(self, remaining_cards):
     self._remaining_cards = remaining_cards
@@ -31,9 +27,6 @@ class RankedHand(object):
   def __lt__(self, other):
     return self.rank() < other.rank()
 
-
-
-@total_ordering
 class HighCard(RankedHand):
   def __init__(self, remaining_cards):
     super(HighCard, self).__init__(remaining_cards)
@@ -51,8 +44,6 @@ class HighCard(RankedHand):
     else:
       return self.compare_high_cards(other) == -1
 
-
-@total_ordering
 class OnePair(RankedHand):
   def __init__(self, pair_cards, remaining_cards):
     super(OnePair, self).__init__(remaining_cards)
@@ -74,9 +65,6 @@ class OnePair(RankedHand):
     else:
       return self.pair_cards()[0] < other.pair_cards()[0] or (self.pair_cards() == other.pair_cards() and self.compare_high_cards(other) == -1)
 
-
-
-@total_ordering
 class TwoPair(RankedHand):
   def __init__(self, arr_of_pair_cards, remaining_cards):
     super(TwoPair, self).__init__(remaining_cards)
@@ -112,9 +100,6 @@ class TwoPair(RankedHand):
     else:
       return False
 
-
-
-@total_ordering
 class ThreeKind(RankedHand):
   def __init__(self, three_kind_cards, remaining_cards):
     super(ThreeKind, self).__init__(remaining_cards)
@@ -141,9 +126,6 @@ class ThreeKind(RankedHand):
     else:
       return False
 
-
-
-@total_ordering
 class Straight(RankedHand):
   def __init__(self, all_cards):
     super(Straight, self).__init__(all_cards)
@@ -171,9 +153,6 @@ class Straight(RankedHand):
     else:
       return self.straight_rank() < other.straight_rank()
 
-
-
-@total_ordering
 class Flush(RankedHand):
   def __init__(self, all_cards):
     super(Flush, self).__init__(all_cards)
@@ -191,9 +170,6 @@ class Flush(RankedHand):
     else:
       return self.compare_high_cards(other) == -1
 
-
-
-@total_ordering
 class FullHouse(RankedHand):
   def __init__(self, three_kind, pair):
     super(FullHouse, self).__init__([])
@@ -221,18 +197,10 @@ class FullHouse(RankedHand):
     else:
       return False
 
-
-
-
-@total_ordering
 class FourKind(RankedHand):
-  def __init__(self, four_kind, remaining_card):
-    super(FourKind, self).__init__(remaining_card)
-    self._four_kind = four_kind
+  def __init__(self, four_kind_rank):
+    self.four_kind_rank = four_kind_rank
     self._rank = 7
-
-  def four_kind(self):
-    return self._four_kind
 
   def __eq__(self, other):
     if self.rank() != other.rank():
@@ -242,14 +210,11 @@ class FourKind(RankedHand):
   def __lt__(self, other):
     if self.rank() != other.rank():
       return super(FourKind, self).__lt__(other)
-    elif(self.four_kind()[0] < other.four_kind()[0]):
+    elif(self.four_kind_rank < other.four_kind_rank):
       return True
     else:
       return False
 
-
-
-@total_ordering
 class StraightFlush(Straight):
   def __init__(self, all_cards):
     super(StraightFlush, self).__init__(all_cards)

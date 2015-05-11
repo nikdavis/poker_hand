@@ -70,7 +70,7 @@ def test_full_house():
   assert high != low
 
 def test_full_house():
-  high, low  = FourKind([12, 12, 12, 12], [2]), FourKind([3, 3, 3, 3], [14]),
+  high, low  = FourKind(12), FourKind(3),
   assert high > low
   assert high != low
 
