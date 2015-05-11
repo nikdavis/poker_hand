@@ -4,7 +4,7 @@ from card_parser import *
 from collections import Counter
 
 class Hand(object):
-  def __init__(self, ranks, suits):
+  def __init__(self, card_dict):
     """Expect CardParser dict of one hand"""
     self.cards = card_dict
     self.hands = []
