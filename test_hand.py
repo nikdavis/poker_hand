@@ -1,9 +1,6 @@
 from hand import *
 from card_parser import *
 
-def test_exists():
-  assert isinstance(Hand,type)
-
 def test_can_detect_ace_low_straight():
   cards = "2H 3D 5S 4C AD"
   parser = CardParser(cards)
