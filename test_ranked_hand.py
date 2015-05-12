@@ -4,8 +4,10 @@ def test_compare_between_child_child():
   high_card = HighCard([14, 10, 9, 5, 2])
   one_pair = OnePair([9, 9], [14, 10, 2])
   another_pair = OnePair([9, 9], [14, 10, 2])
+  third_pair = OnePair([9, 9], [14, 13, 2])
   assert high_card < one_pair
   assert one_pair == another_pair
+  assert one_pair < third_pair
 
 def test_function_high_card_comparison():
   high_card_hands  = HighCard([14, 10, 9, 5, 2]), HighCard([14, 10, 9, 3, 2])
@@ -81,9 +83,13 @@ def test_straight_flush():
   assert high != low
 
 def test_straight_flush_against_straight():
-  high, low = StraightFlush([14, 13, 12, 11, 10]), Straight([14, 13, 12, 11, 10]),
+  high, low = StraightFlush([13, 12, 11, 10, 9]), Straight([13, 12, 11, 10, 9]),
   assert high > low
   assert high != low
 
-
+def test_royal_flush_against_straight():
+  high, low = RoyalFlush(), Straight([13, 12, 11, 10, 9]),
+  assert high > low
+  assert high != low
+  assert high == high
 
