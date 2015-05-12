@@ -7,7 +7,7 @@ class Hand(object):
   def __init__(self, ranks, suits):
     self.ranks = ranks
     self.suits = suits
-    self.hands = []
+    self.best_hand = None
     self._remaining_cards = None
     self._pair_ranks = {  'one': None,
                           'two': None,
@@ -27,8 +27,6 @@ class Hand(object):
       if (ranks_sorted[i] - ranks_sorted[i-1]) == 1:
         run += 1
     return run == 4
-
-    return 5 in [len(run) for run in arr_of_runs] # 5 sequential cards
 
   def has_flush(self):
     return len(set(self.suits)) == 1
@@ -78,23 +76,25 @@ class Hand(object):
 
   def calc_rank(self):
     hand = None
-    if(self.has_straight_flush()):
-      hand = StraightFlush(hands)
+    if(self.has_royal_flush()):
+      hand = RoyalFlush()
+    elif(self.has_straight_flush()):
+      hand = StraightFlush(list(self.ranks))
     elif(self.has_four_kind()):
       hand = FourKind(self._pair_ranks["four"])
     elif(self.has_full_house()):
       hand = FullHouse(self._pair_ranks["three"])
     elif(self.has_flush()):
-      hand = Flush(self.ranks)
+      hand = Flush(list(self.ranks))
     elif(self.has_straight()):
-      hand = Straight(self.ranks)
+      hand = Straight(list(self.ranks))
     elif(self.has_three_kind()):
-      hand = 3
+      hand = ThreeKind(self._pair_ranks["three"])
     elif(self.has_two_pair()):
-      hand = 2
+      hand = TwoPair(self._pair_ranks["two"])
     elif(self.has_pair()):
-      hand = 1
-    return hand
+      hand = OnePair(self._pair_ranks["one"])
+    self.best_hand = hand
 
 
 

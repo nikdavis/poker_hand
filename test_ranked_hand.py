@@ -45,15 +45,15 @@ def test_three_kind_decided_on_three_kind():
 
 def test_straight_decided_straight():
   high, low  = Straight([14, 13, 12, 11, 10]), Straight([9, 8, 7, 6, 5])
-  assert high.straight_rank() == 14
-  assert low.straight_rank() == 9
+  assert high.straight_rank == 14
+  assert low.straight_rank == 9
   assert high > low
   assert high != low
 
 def test_straight_ace_low():
   high, low  = Straight([14, 13, 12, 11, 10]), Straight([5, 4, 3, 2, 14])
-  assert high.straight_rank() == 14
-  assert low.straight_rank() == 5
+  assert high.straight_rank == 14
+  assert low.straight_rank == 5
   assert high > low
   assert high != low
   assert high == high
