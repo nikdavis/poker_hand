@@ -1,8 +1,6 @@
-from operator import itemgetter
-from itertools import groupby
-from card_parser import *
+from poker_hand.parsers import *
+from poker_hand.ranked_hand import *
 from collections import Counter
-from ranked_hand import *
 
 class Hand(object):
   def __init__(self, ranks, suits):

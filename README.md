@@ -1,19 +1,12 @@
-Big questions:
+Nik's poker hand solution.
 
-How best to represent cards (suits & values)?
-* suit
-* nominal value (1, 2, jack, etc)
-* numeric bigness (8, 9, 10, 10/jack, 10/queen)
-* numeric order (8, 9, 10, 11/jack, 12/queen)
+Poker hand dataset (25010 truths) used from:
+https://archive.ics.uci.edu/ml/datasets/Poker+Hand
 
-How to represent hands?
-* some object
-* defined rank
-  * If rank is the same, some way to compare same object
+requires pytest:
 
-
-e.g.
-
-```python
-class Hand(object):
+```bash
+pip install pytest
+# In this repo's folder
+py.test
 ```

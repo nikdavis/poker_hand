@@ -1,5 +1,5 @@
-from hand import *
-from card_parser import *
+from poker_hand.hand import Hand
+from poker_hand.parsers.card_parser import CardParser
 
 def test_can_detect_ace_low_straight():
   cards = "2H 3D 5S 4C AD"

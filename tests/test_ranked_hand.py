@@ -1,4 +1,4 @@
-from ranked_hand import *
+from poker_hand.ranked_hand import *
 
 def test_compare_between_child_child():
   high_card = HighCard([14, 10, 9, 5, 2])

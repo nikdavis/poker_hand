@@ -1,4 +1,4 @@
-from card_parser import *
+from poker_hand.parsers.card_parser import CardParser
 
 def test_exhasts():
   assert isinstance(CardParser,type)

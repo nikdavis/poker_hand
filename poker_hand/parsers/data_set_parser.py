@@ -1,4 +1,4 @@
-from card_parser import *
+from poker_hand.parsers import card_parser
 
 class DataSetParser:
   SUIT = {1: "heart", 2: "spade", 3: "diamond", 4: "club"}
